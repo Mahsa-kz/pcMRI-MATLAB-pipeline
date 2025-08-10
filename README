@@ -1,0 +1,99 @@
+pcMRI Inhomogeneity Correction and Displacement Analysis
+This repository provides MATLAB code for analyzing phase‑contrast MRI (pcMRI) velocity data, correcting background phase inhomogeneities, segmenting a user‑selected region of interest (ROI), and computing displacement metrics within the ROI. The script supports interactive segmentation and visualization steps, enabling researchers to inspect velocity maps, mask specific ROIs, unwrap phases, and extract time‑resolved velocity and displacement curves.
+
+Features
+Load processed pcMRI velocity data using an interactive file picker.
+
+Convert raw velocities to cm/s and display temporal mean velocity maps.
+
+Inspect pcMRI frames via optional phase movie playback with configurable velocity encoding (VENC).
+
+Semi‑automatically select a rectangular crop and draw a polygonal ROI mask on the chosen phase.
+
+Correct background phase offset by subtracting the temporal mean velocity within the ROI and enforce zero‑mean displacement.
+
+Identify and remove voxels with large positive mean velocity (> 0.05 × VENC).
+
+Compute voxelwise corrected velocity and convert velocity to displacement by integrating over cardiac phases.
+
+Determine the temporal maximum displacement per voxel and the spatial maximum displacement within the ROI.
+
+Visualize ROI masks, displacement maps, strain maps across phases, and ROI‑averaged velocity and displacement curves.
+
+Support manual phase unwrapping for wrapped velocities and iterative pixel/ROI selection.
+
+Requirements
+MATLAB R2021a or later (tested with R2023b).
+
+Image Processing Toolbox (for functions such as drawpoint, drawpolygon, poly2mask, inpolygon, imcontrast, etc.).
+
+Signal Processing Toolbox (for cumtrapz integration).
+
+A processed pcMRI dataset saved as a .mat file with structure processed_data containing velocity values (mm/s) and a filename ending with VENC (e.g. subject_50.mat, where 50 is VENC in cm/s). The script assumes data are arranged as [rows × cols × phases].
+
+Usage
+Place your processed pcMRI .mat files in an accessible directory. Each file should be named with the VENC encoded as the fifth character from the end, for example: subject1_50.mat for VENC = 50 cm/s.
+
+Run the script in MATLAB:
+
+matlab
+Copy
+Edit
+% In the MATLAB command window:
+cd(path_to_this_repository);
+run('pcMRI_inhomogeneity_correction.m');
+When prompted, select the desired .mat file. The script reads the VENC value from the filename and loads the processed_data variable.
+
+Inspect the temporal mean velocity map that appears. You will be asked whether to view a phase movie. Choose Yes to step through each phase with velocity colormap.
+
+Enter a phase number to work with. The script then displays that phase and requests two clicks to define the top‑left and bottom‑right corners of a rectangular crop.
+
+Within the cropped region, draw a polygon around your ROI using the interactive drawpolygon tool. The ROI will be converted to a binary mask used for calculations.
+
+The script subtracts the mean velocity within the ROI to correct the offset, enforces zero‑mean displacement, and allows you to unwrap wrapped velocities (right‑click a pixel and specify phase range and sign).
+
+Use the interactive selection tool to pick individual voxels for examining their velocity and displacement traces. Click the same voxel again to toggle selection. Clicking the top‑left pixel terminates the selection loop; clicking the bottom‑right pixel resets the segmentation.
+
+Once satisfied, a series of figures will display:
+
+Mean velocity image with ROI overlay.
+
+Corrected velocity maps per phase.
+
+Displacement heatmap and strain maps.
+
+Plots of ROI‑averaged velocity and displacement curves across cardiac phases.
+
+Tables of maximum/minimum displacement values.
+
+Inputs and Outputs
+Inputs:
+
+.mat file containing processed_data: 3D pcMRI velocity data (mm/s).
+
+User interactions defining crop region, ROI polygon, phase unwrapping, and voxel selections.
+
+Outputs:
+
+Interactive figures and images saved to the Results directory (modify savedir variable in the script).
+
+ROI mask and corrected velocity/displacement matrices (not automatically saved; modify script to save as needed).
+
+Printed metrics: temporal mean velocity, maximum/minimum velocity and displacement, approximate systolic/diastolic volumes (using simplified area assumption).
+
+Limitations
+The script requires user interaction for segmentation and phase unwrapping; it is not fully automated.
+
+It assumes uniform pixel spacing (psz set to [0.6 mm, 0.6 mm, 3 mm]) and cardiac cycle duration; modify psz and RR variables to match your acquisition.
+
+Large .mat datasets should be processed outside of Git version control or handled with Git LFS.
+
+License
+This code is released under the MIT License. See LICENSE for details.
+
+Citation
+If you use this code in your research, please cite this repository and the associated paper. 
+
+
+
+For questions or contributions, please open an issue or pull request on GitHub.
