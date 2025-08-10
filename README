@@ -23,7 +23,7 @@ Visualize ROI masks, displacement maps, strain maps across phases, and ROI‑ave
 Support manual phase unwrapping for wrapped velocities and iterative pixel/ROI selection.
 
 Requirements
-MATLAB R2021a or later (tested with R2023b).
+MATLAB R2024a or later (tested with R2024a).
 
 Image Processing Toolbox (for functions such as drawpoint, drawpolygon, poly2mask, inpolygon, imcontrast, etc.).
 
