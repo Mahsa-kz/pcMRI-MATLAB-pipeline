@@ -1,0 +1,23 @@
+# --- MATLAB (safe to ignore) ---
+*.asv                  # autosave
+*.m~                   # backup of .m
+*.autosave
+*.mex*                 # compiled MEX
+*.p                    # P-coded files (compiled)
+*.slxc                 # Simulink cache
+*.mdl.r20*             # Simulink backup revisions
+
+# --- Editors/OS ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# --- Project outputs (adjust as you like) ---
+outputs/
+figures/
+cache/
+tmp/
+data/raw/
+data/interim/
